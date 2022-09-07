@@ -330,6 +330,7 @@ None
 Now we can add this data to out QuestDATABASE.cfg file:
 
 ![](https://i.imgur.com/ejk2NIl.png)
+
 After that we are able to give this quest to any NPC profile we create in QuestProfiles.cfg
 
 I will create NPC profile named TestQuests and add my quest to it:
@@ -397,7 +398,7 @@ Markers on harvest + collect targets
 ![](https://i.imgur.com/Rr3SMac.png)
 
 
-Markers on Talk Tasrgets
+Markers on Talk Targets
 
 ![](https://i.imgur.com/Ejrhf5u.png)
 
