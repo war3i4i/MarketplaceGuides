@@ -27,8 +27,18 @@ Paypal: war3spells@gmail.com
 | 7.8.9       | Fixed kill quest sometimes giving double reward                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | 7.9.0       | Fixed problem where item with 5 sockets were shown as 4 sockets max                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | 7.9.1-7.9.2 | 1) Bugfixes<br/>Increase max marketplace pric to 10 mil                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| 7.9.3       | Fixed new Jewelcrafting mod version problem with marketplace display                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| 7.9.3       | Fixed new Jewelcrafting mod version problem with marketplace display                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| 7.9.4       | NPC's now may have interact sound<br/>New Territory Flag: SnowMask (makes ground with snow only)<br/>New Territory Flag: NoItemLoss. On death inventory kept with player<br/>Bugfixes<br/>Added <speed> tag to Teleporter spot name (read Teleporter guides)<br/>Moved all system Guides to separated github page because of char limit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 7.9.5-7.9.6 | Fixed an issue with disconnecting players after few hours                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 7.9.7       | Added 3 new options in NPC Fasion Menu: Text Font, Text Size, Test Height Offset                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| 7.9.8       | Now Admins using Debug Mod can remove slots (even Expired one's) from marketplace by clicking "X" button in end of each slot                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 7.9.9       | Fixed small marketplace bug on trying to sell items<br/>Now "NPC Model Override" can be literally ANYTHING in game: Piece objects (structures), Itemdrops, trees and so on<br/>Please use new model override feature on your own risk since its not being tested yet and may cause a lot of bugs. DO NOT USE VFX's as model override or model will be gone. If you somehow failed NPC model override then write it chat /npc remove . That will cause all near NPC's (5 meter range) be removed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 7.9.10      | Fixed KeyManager problem for server using same IP                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| 8.0.0       | 1) Bugfixes<br/>2) Added new Premium System: Distanced UI that can use NPC profiles without interacting with NPCs. To use go to MarketplaceKG/PremiumSystem/ folder to  edit .cfg file. Hotkey to open UI is L. Alt + ~<br/>3) Added new NPC UI : Save/Load. Opens with C + Interact. Allows you to save NPC appearance and then load it back on another NPC. To save ALL NPCs in your location write /npc save in chat<br/>4) Replaced old localization on LocalizationManager. Now you can add your own localization. For that download file: https://pastebin.com/7z08xMQq . Place it into Valheim/BepInEx/config/ folder and name it MarketplaceAndServerNPCs.YOURLANGUAGE.yml . Then you can translate lines to make your own language localization                                                                                                                                                                                                                                                                                                                                                                                                              |
+| 8.0.2       | Added few log lines for PremiumSystem                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 </details>
+
+**Now you can add your own localization. For that download file: https://pastebin.com/7z08xMQq . Place it into Valheim/BepInEx/config/ folder and name it MarketplaceAndServerNPCs.YOURLANGUAGE.yml . Then you can translate lines to make your own language localization**
 
 
 
@@ -522,25 +532,301 @@ That will make teleport to spawn not instant but more magic-alike with speed of 
 
 <details><summary>Gambler</summary>
 <p>
-Currently no guide. Please use guide inside GamblerProfiles.cfg itself
+
+An NPC that can be placed by admin. The gambler NPC requires items to activate, typically coins. The Gambler offers a list of items and a set amount of which the player can win. So for example a gambler can have ten items in the list, allow two of them to be won, and set a price to roll a chance at winning.
+
+It is possible to combine an admin placed territory at NPC locations if you feel that is right for your server environment. This can provide a safe haven for players while interacting with NPC's. The territory area will also announce itself when entering which can add ambience to the zone. Refer to the Territories reamde for more info on setting up a territory zone.
+
+
+All NPC placed characters can be altered to include looks, clothing, interactions, patrol options, greetings, animations, salutations, etc. Refer to the "how to spawn/change section" readme for more info on setting up and altering NPC's.   
+<br>
+<br>
+<b>To add a new profile</b> you need to write [ProfileName=ItemsPerRollCount] , and then on a new line add an item list for it (<u>max 10 items</u>, first item is ITEM NEEDED TO ROLL): RollItemPrefab, RollItemCount, Item1, Item1count, Item2, Item2Count, Item3, Item3Count.....     
+Item counts can be variable as seen below.
+<br>
+
+Example:
+
+[test=2]   
+Coins, 10, SwordIron, 1, Tar, 30-50, Wood, 1-100
+
+^ This will add a profile to gambler with 2 items per roll count (he can take 2 items out of 3 in the list)   
+Player will need 10 coins per roll, Items are: Sword iron (one), Tar (from 30 to 50 randomly), Wood (from 1 to 100) randomly
+
+<br> 
+More Examples:  
+
+[gmeadows=3]<br>
+Coins, 250, SpearBronze, 1, Tar, 3-5, Wood, 25, ArrowFire, 20-30, FineWood, 20, Stone, 25, ArrowWood, 20-30, Feathers, 15, MeadTasty, 3-5, TurnipStew, 2-3, ArmorTrollLeatherChest, 1, QueensJam, 3-5, FishRaw, 10, ArrowFlint, 20-30, ArmorTrollLeatherLegs, 1, Coal, 25
+
+[gswamp=3]<br>
+Coins, 500, AtgeirBronze, 1, ArrowFire, 30-50, ArrowBronze, 20-30, FineWood, 40, Stone, 50, ArrowIron, 10-20, Feathers, 20, MeadTasty, 3-5, TurnipStew, 3-5, ArmorRootChest, 1, OdinsDelight, 2-3, TeriyakiSalmon, 3-5, BoneArrow, 20-30, ArmorRootLegs, 1, Coal, 35
+
+[gmountain=3]<br>
+Coins, 1000, AtgeirIron, 1, Tar, 30-50, ArrowPoison, 50, FineWood, 60, Stone, 75, ArrowObsidian, 50, Feathers, 25, MeadTasty, 3-5, TurnipStew, 5-10, ArmorFenringChest, 1, OdinsDelight, 3-5, HoneyTeriyakiSalmonWrap, 3-5, BoneArrow, 30-50, ArmorFenringLegs, 1, Coal, 50
+
 </p>
 </details>
 
 <details><summary>Buffer</summary>
 <p> 
-Currently no guide. Please use guide inside BufferProfiles.cfg itself
+
+Buffer  
+is a placeable npc that can be set in the world with pre-configured "buffs" that can be temporarily enabled on the players items. When a player interacts with the npc they can choose from what type of buff they want and on what inventory item it gets placed.
+
+
+
+It is possible to combine an admin placed territory at NPC locations if you feel that is right for your server environment. This can provide a safe haven for players while interacting with NPC's. The territory area will also announce itself when entering which can add ambience to the zone. Refer to the Territories reamde for more info on setting up a territory zone.
+
+
+
+All NPC placed characters can be altered to include looks, clothing, interactions, patrol options, greetings, animations, salutations, etc. Refer to the "how to spawn/change section" readme for more info on setting up and altering NPC's.   
+<br>
+
+Buffs
+The Database config is a file with ALL Your buffs. Here you will need to add all buffs so later you can use them in NPC profiles that you setup.
+
+Each buff should have a UNIQUE name (it will be its own Unique ID). Buff should have a layout like this:
+
+[UniqueName]   
+Name   
+Duration (seconds)   
+Buff Icon (Can be taken from monster prefab name or item prefab name)   
+Price prefab name, Price count   
+Buff modifiers    
+Buff visual effect    
+Buff group
+
+Example:
+
+[TestBuff]    
+First buff i created    
+180   
+SwordIron   
+Coins, 1     
+ModifyAttack = 1.5   
+vfx_Burning    
+Combat
+
+^ Creates buff with duration 180 sec, icon = SwordIron icon,  price = 1 coin, Modifiers are ModifyAttack x1.5,
+visual effect is burning and group is Combat.    
+<br>
+
+<br>
+Modifiers   
+All possible modfifiers: ModifyAttack, ModifyHealthRegen, ModifyStaminaRegen, ModifyRaiseSkills, ModifySpeed, ModifyNoise,
+ModifyMaxCarryWeight, ModifyStealth, RunStaminaDrain, DamageReduction   
+
+Note: Multiple buffs can be applied at once by putting a "," between them such as;   
+ModifySpeed = 1.2, ModifyNoise = 1.4
+
+One "buff" can have nine different modifiers, and the Buff Group combines Buff modifiers into one group. This is done only for balancing, so you can make cheap buffs, normal buffs, and high-priced buffs.   
+Note: If buffs are in the same group then player would be able to buy only ONE BUFF OUT OF GROUP at a time. See below there are two examples in the "exploration" group, so only one could be purchases/applied at a time.   
+<br>
+
+Profiles  
+Buffs need to be applied to an NPC profile in order to work. To add a new profile you need to write [ProfileName] , and on a new line add buffer list for it (buff unique IDs from BufferDATABASE.cfg)
+
+[MeadowsBuffs]    
+TestBuff1, TestBuff2
+
+^adds MeadowsBuffs profile to the buffer NPC with 2 buffs taken from buff database config file.
+
+<br>
+More Examples:
+
+[Stealth]
+Stealth Increase   
+2400   
+HelmetTrollLeather   
+Coins, 300   
+ModifyStealth = 5    
+None   
+Exploration
+
+
+[Speed]   
+Swiftness   
+1600   
+TankardOdin   
+Coins, 150   
+ModifySpeed = 1.5   
+None   
+Speed
+
+[Run]    
+Running Increase   
+1800   
+GlowingMushroom   
+Coins, 500   
+ModifyStaminaRegen = 2, ModifySpeed = 2   
+vfx_GodExplosion   
+Exploration
+
+[Tenacity]    
+Toughness increase     
+900     
+HelmetDrake     
+Coins, 500     
+DamageReduction = 0.30    
+vfx_creature_love   
+Toughness
+
+[Assault]    
+Fighting increase    
+600    
+FlametalOre    
+Coins, 500     
+ModifyAttack = 2    
+vfx_fir_oldlog    
+Rage
+
+
+Note: you can view all the in-game VFX by using easy spawner and searching for vfx.  
+some common useful ones are vfx_HealthUpgrade, vfx_lootspawn, vfx_odin_despawn, vfx_offering, vfx_perfectblock, vfx_odin_despawn
+
 </p>
 </details>
 
 <details><summary>Territory System</summary>
 <p> 
-Currently no guide. Please use guide inside TerritoryDatabase.cfg itself
+
+Territories can be created to provide a special area. They can be used to provide a place for marketplace npc's, a PVP arena, a safe haven for a town, really the possibilities are up to you. Territories are outlined by coordinates and the actions allowed or disallowed inside a territory are defined by "flags". Territories can be set by admins, but can also be placed by players if enabled in config. 
+
+
+Territory config parameters:
+
+[ZoneName]  
+Shape type: Circle, Square  
+X pos, Z pos, Radius  
+Red Color, Green Color, Blue Color (from 1 to 255)  
+Zone Flags seperated by comma if multiple  
+Owners SteamID seperated by comma if multiple
+
+Note the use of standard html styles like adding color, bold text, italics, size etc.
+
+Example of admin configured territory in the territorydatabase.cfg file:
+
+[<color=lime>Traning  Arena</color>]  
+Circle  
+100, 300, 500  
+255, 0, 0  
+NoInteractDoors, CustomEnvironment = Clear, NoPickaxe, PvpOnly  
+None  
+^ Will create a circular zone at X 100 and Z 300 with Radius 500 and color RED and custom flags.
+
+
+Also, if you will have multiple areas with similar names you can put @1, @2 behind the name to differentiate them.
+
+[Trader@1]   
+Circle   
+-4784, 3967, 30   
+138, 43, 226, false   
+NoBuild, NoBuildDamage, NoPickaxe, ForceBiome = 4, PeriodicHealALL = 2, NoMonsters, NoDeathPenalty, InfiniteFuel, NoStructureSupport, NoInteractCraftingStation, NoInteractItemStands, NoAttack, NoInteractItems   
+76543210123456789, 7656789876543211,
+
+[Trader@2]   
+Square   
+784, -588, 20   
+238, 99, 101, false   
+NoBuild, NoBuildDamage, NoPickaxe, ForceBiome = 4, PeriodicHealALL = 2, NoMonsters, NoDeathPenalty, InfiniteFuel, NoStructureSupport, NoInteractCraftingStation, NoInteractItemStands, NoAttack, NoInteractItems   
+76543210123456789, 7656789876543211,
+
+###Territories flags are as follows:
+
+        None
+        PushAway  
+        NoBuild  
+        NoPickaxe  
+        NoInteract  
+        NoAttack  
+        PvpOnly  
+        PveOnly  
+        PeriodicHeal = Integer Value
+        PeriodicDamage = Integer Value 
+		PeriodicHealALL = Integer Value 
+        IncreasedPlayerDamage = Integer Value 
+        IncreasedMonsterDamage = Integer Value 
+        NoMonsters  
+        CustomEnvironment = Clear, Twilight_Clear, Misty, Darklands_dark, Heath clear, DeepForest Mist, GDKing, Rain, LightRain, ThunderStorm, Eikthyr, GoblinKing, nofogts, SwampRain, Bonemass, Snow, Twilight_Snow, Twilight_SnowStorm, SnowStorm, Moder, Ashrain, Crypt, SunkenCrypt        MoveSpeedMultiplier = Integer Value 
+        NoDeathPenalty  
+        NoPortals  
+		NoInteractPortals 
+        ForceGroundHeight = Integer Value 
+        ForceBiome = 1 (Meadows), 2 (Swamp), 4 (Mountain), 8 (BlackForest), 16 (Plains), AshLands, DeepNorth, Ocean, Mistlands
+        AddGroundHeight = Integer Value 
+        NoBuildDamage  
+        MonstersAddStars  
+        InfiniteFuel  
+        NoInteractItems  
+        NoInteractCraftingStation  
+        NoInteractItemStands  
+        NoInteractChests  
+        NoInteractDoors  
+        NoStructureSupport  
+        CustomPaint = paved
+        LimitZoneHeight = Integer Value 
+		SnowMask  (creates a snow covered environment)
+
+
+Territories can also be set by players if enabled in the PlayerTerritories config file. The amount of territories a player can create, the radius, and the allowed flags can be set in the file.
+
+When a player presses F8 a menu will appear and the player can enter coordinates for their new territory. Those settings will be saved in a json file in the PlayerTerritories folder beside the config file.
 </p>
 </details>
 
 <details><summary>Battlepass</summary>
 <p> 
-Currently no guide
+
+Battlepass   
+is a reward system for players on a server. It allows the admin to set items as rewards, and players can claim their reward when they have accumulated enough experience points. The admin will need to create quests or find some other way to award battlepass experience to the players.
+
+The battlepass folder contains a main config, a config for free rewards, and another for premium rewards. To add players to the premium list you must enter their Steam Ids in the main marketplace.cfg file in the section "BattlepassVIPlist". Only those players will have access to premium rewards.
+
+The main config has two options. First is the battlepass name which is a unique name. Be careful choosing the name because after changing the battlepass name it will drop all experience / rewards for the previous battlepass name, meaning all players accumulated experience will be lost if you change the name mid-season.
+
+The second option is the battlepass experience step. This can be whatever integer value you wish. This value should correlate with the amount of experience being awarded through quests. If the experience step is set to 50 then you may wish to give smaller experience rewards from quests like 10 or 15 per quest completed. However, if you set the steps to 200 then you will need to increase the amount given for quests to accomodate.
+
+Finally, if you want to skip a level then simply do not include the "reward level". For example, if you want to have a reward at level 2 and then the next at level 5 all you have to do is not include a reward level for the levels in between. For example, go straight from level 3 to level 7.
+
+
+Format
+The format for creating the rewards is the same for either free or premium. The format for entering rewards is [unique name = reward level] , followed by the reward on the next line. The format of the reward is item name,amount,item level
+
+Example:<br>
+[food is good = 1]    
+Carrot,5,0
+
+
+More Examples:
+
+[reward = 1]   
+ArmorTrollLeatherLegs,1,0
+
+[reward = 2]   
+ArmorTrollLeatherChest,1,0
+
+[reward = 3]   
+HelmetTrollLeather,1,0
+
+[reward = 4]   
+CapeTrollHide,1,0
+
+[reward = 5]   
+BowFineWood,1,0
+
+[reward = 6]    
+SpearChitin,1,0
+
+[reward = 7]    
+ArmorIronLegs,1,0
+
+[reward = 8]   
+ArmorIronChest,1,0
+
+[reward = 9]   
+HelmetIron,1,0
+
 </p>
 </details>
 
@@ -553,5 +839,5 @@ Currently no guide
 
 ![https://i.imgur.com/gTTJ9HJ.png](https://i.imgur.com/gTTJ9HJ.png)
 
-﻿For Questions or Comments, find ## KG![https://i.imgur.com/CPYNjXV.png](https://i.imgur.com/CPYNjXV.png)﻿ in the Odin Plus Team Discord:
+For Questions or Comments, find## KG![https://i.imgur.com/CPYNjXV.png](https://i.imgur.com/CPYNjXV.png)﻿ in the Odin Plus Team Discord:
 [![https://i.imgur.com/XXP6HCU.png](https://i.imgur.com/XXP6HCU.png)](https://discord.gg/5gXNxNkUBt)
